@@ -1,39 +1,40 @@
 """
 This module allows you to split data into periods when there is a periodic phenomenon.
 """
+import pdb
+import pandas as pd
 
 
-from pkgutil import extend_path
-
-
-def get_positions_of_the_period_changes(data: list) -> list:
+def get_positions_of_the_period_changes(data: pd.Series) -> pd.Int64Index:
     """
-    return a list with the positions where there is a change of period
-    param data : is the list of data to analyse
+    return a pandas Int64Index representing the end off each series of period
+    param Series : is a Series for the module pandas with the data to analyse
     """
-    list_of_position = []
-    list_of_the_evolution_of_the_slope = __get_the_list_of_the_evolution_of_the_slope(
-        data)
 
-    for i in range(len(list_of_the_evolution_of_the_slope)):
-        if i != 0:
-            if list_of_the_evolution_of_the_slope[i] == "-" and list_of_the_evolution_of_the_slope[i-1] == "+":
-                list_of_position.append(i+1)
+    # Create a dataframe for calculate the difference between value n and value n - 1
+    data_2 = data[1:].reset_index(drop=True)
+    df = pd.DataFrame({
+        'data': data,
+        'data_2': data_2
+    })
 
-    return list_of_position
+    df['diff'] = df['data'] - df['data_2']
+    df = df.dropna(subset=['diff'])
 
+    # Affection a symbol off each diff, +  for positive data evolution, - for negative data evolution, = for stable data evolution
+    df.loc[df['diff'] > 0, 'symbol'] = "+"
+    df.loc[df['diff'] < 0, 'symbol'] = "-"
+    df.loc[df['diff'] == 0, 'symbol'] = "="
 
-def __get_the_list_of_the_evolution_of_the_slope(data: list):
-    list_to_return = []
+    # Creation of new column for comparing evolution of data between value n and value n - 1
+    df['symbol_n'] = df.iloc[1:]['symbol'].reset_index(drop=True)
 
-    for i in range(len(data)):
-        if i == 0:
-            list_to_return.append("")
-        else:
-            try:
-                list_to_return.append(
-                    "+" if float(data[i].replace(",", ".")) - float(data[i-1].replace(",", ".")) >= 0 else "-")
-            except ValueError as E:
-                print(E)
+    # We want to cut the graph at each vertex
+    df_to_return = df.loc[(df['symbol_n'] == '+') & (df['symbol'] == '-')]
 
-    return list_to_return
+    # We must add one in index to correct the previous offset
+    index_to_return = df_to_return.index + 1
+
+    # TODO : La methode ne fonctionne pas si la valeur pour les pics faibles où nous avons deux valeurs pour le sommet peut faire l'etude des signes sur plusieurs valeur par exemple deux valeurs d'aug et deux de dim.
+
+    return index_to_return
