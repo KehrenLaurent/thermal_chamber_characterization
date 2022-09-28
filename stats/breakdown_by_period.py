@@ -1,7 +1,6 @@
 """
 This module allows you to split data into periods when there is a periodic phenomenon.
 """
-import pdb
 import pandas as pd
 
 
