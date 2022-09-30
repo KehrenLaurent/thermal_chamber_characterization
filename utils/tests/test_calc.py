@@ -1,7 +1,7 @@
 from math import sqrt
 import unittest
 
-import stats.calc as calc
+import utils.calc as calc
 
 
 class TestCalc(unittest.TestCase):

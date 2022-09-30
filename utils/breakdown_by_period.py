@@ -7,7 +7,7 @@ import pandas as pd
 def get_positions_of_the_period_changes(data: pd.Series) -> pd.Int64Index:
     """
     return a pandas Int64Index representing the end off each series of period
-    param Series : is a Series for the module pandas with the data to analyse
+    param Series : Series from pandas with the data of one sensor
     """
 
     # Create a dataframe for calculate the difference between value n and value n - 1

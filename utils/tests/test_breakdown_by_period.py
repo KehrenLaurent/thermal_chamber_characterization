@@ -1,7 +1,7 @@
 from tkinter.ttk import Separator
 import unittest
 import pandas as pd
-import stats.breakdown_by_period as b_b_p
+import utils.breakdown_by_period as b_b_p
 
 
 class TestCalc(unittest.TestCase):
@@ -10,7 +10,7 @@ class TestCalc(unittest.TestCase):
 
     @staticmethod
     def __get_data_for_mock() -> pd.DataFrame:
-        df = pd.read_csv('stats/tests/data_set.csv',
+        df = pd.read_csv('utils/tests/data_set.csv',
                          delimiter=";", decimal=',')
         return df
 
