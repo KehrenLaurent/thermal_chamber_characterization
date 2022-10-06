@@ -1,4 +1,4 @@
-from tkinter.ttk import Separator
+from pdb import set_trace
 import unittest
 import pandas as pd
 import utils.breakdown_by_period as b_b_p
@@ -15,9 +15,26 @@ class TestCalc(unittest.TestCase):
         return df
 
     def test_get_positions_of_the_period_changes(self):
-        positions_of_the_period_changes_for_sensor_1 = [10, 18, 27, 36, 44, 53, 62, 70, 79,
-                                                        88, 96, 105]
+        positions_of_the_period_changes_for_sensor_1 = [8, 16, 25, 34, 42, 51]
         series_sensor_1 = self.mock_data['Sensor_1']
-        position = b_b_p.get_positions_of_the_period_changes(series_sensor_1)
-        self.assertListEqual(
+        position = b_b_p.get_positions_of_the_period_changes(
+            series_sensor_1).tolist()
+
+        self.assertEqual(
             positions_of_the_period_changes_for_sensor_1, position)
+
+    def test_add_in_dataframe_column_with_number_of_period(self):
+        df = b_b_p.add_in_dataframe_column_with_number_of_period(
+            self.mock_data, 'Sensor_1')
+
+        # Check if the column number_period is add
+        self.assertIn('number_period', df.columns.tolist())
+
+        # compare the manual and algorith method of numerotation of period
+        number_of_row = df.shape[0]
+        number_of_row_with_manual_and_algo_number_period_is_the_same = df[
+            df['P_manu_s1'] == df['number_period']].shape[0]
+
+        # if all row is true the cut method is the same with manual and algo method
+        self.assertEqual(
+            number_of_row, number_of_row_with_manual_and_algo_number_period_is_the_same)
