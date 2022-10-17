@@ -38,3 +38,17 @@ class TestCalc(unittest.TestCase):
         # if all row is true the cut method is the same with manual and algo method
         self.assertEqual(
             number_of_row, number_of_row_with_manual_and_algo_number_period_is_the_same)
+
+    def test_get_dataframe_compliant_with_fd_x_15140(self):
+        df = b_b_p.get_dataframe_compliant_with_fd_x_15140(
+            self.mock_data, 'Sensor_1')
+
+        # Check if the dataframe have 30 values or more
+        self.assertGreaterEqual(df.shape[0], 30)
+
+        # check if the dataframe have 2 cycles or more
+        self.assertGreaterEqual(df.groupby('number_period').size().shape[0], 2)
+
+
+if __name__ == "__main__":
+    unittest.main()

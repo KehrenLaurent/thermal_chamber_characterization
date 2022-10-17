@@ -1,7 +1,6 @@
 """
 This module allows you to split data into periods when there is a periodic phenomenon.
 """
-from pdb import set_trace
 import pandas as pd
 
 
@@ -14,7 +13,7 @@ def get_positions_of_the_period_changes(data: pd.Series) -> pd.Int64Index:
     # Create a dataframe for calculate the difference between value n and value n - 1
     data_2 = data[1:].reset_index(drop=True)
     df = pd.DataFrame({
-        'data': data,
+        'data': data
         'data_2': data_2
     })
 
@@ -62,3 +61,31 @@ def add_in_dataframe_column_with_number_of_period(df_with_data: pd.DataFrame, co
         i += 1
 
     return df_with_data.dropna()
+
+
+def get_dataframe_compliant_with_fd_x_15140(df_with_data: pd.DataFrame, colunm_mane_for_cut_period: str) -> pd.DataFrame:
+    """
+    Return a pandas dataframe with a pandas dataframe with a new columns with the number of period (1 to ...) by numbering staring from the end.
+    The dataframe is limited is limited to the last two regulation cycles (or more if there are not thirty measurements)
+    df_with_data : is the dataframe a analyse
+    colunm_mane_for_cut_period: name of the column containing the data that will be used to define the periods
+    """
+
+    df = add_in_dataframe_column_with_number_of_period(
+        df_with_data=df_with_data, colunm_mane_for_cut_period=colunm_mane_for_cut_period)
+
+    assert df.shape[0] > 30, "Dataframe must contain more than 30 values"
+    assert df['number_period'].max(
+    ) >= 2, "Dataframe must contain 2 periods or more"
+
+    i = 2
+    while True:
+        period = [i for i in range(1, i)]
+        df_to_return = df.loc[df.number_period.isin(period)].copy()
+
+        if df_to_return.shape[0] > 30:
+            break
+
+        i += 1
+
+    return df_to_return
