@@ -13,7 +13,7 @@ def get_positions_of_the_period_changes(data: pd.Series) -> pd.Int64Index:
     # Create a dataframe for calculate the difference between value n and value n - 1
     data_2 = data[1:].reset_index(drop=True)
     df = pd.DataFrame({
-        'data': data
+        'data': data,
         'data_2': data_2
     })
 
@@ -81,11 +81,9 @@ def get_dataframe_compliant_with_fd_x_15140(df_with_data: pd.DataFrame, colunm_m
     i = 2
     while True:
         period = [i for i in range(1, i)]
-        df_to_return = df.loc[df.number_period.isin(period)].copy()
-
-        if df_to_return.shape[0] > 30:
+        if df.loc[df.number_period.isin(period)].shape[0] > 30:
             break
 
         i += 1
 
-    return df_to_return
+    return df.loc[df.number_period.isin(period)].copy()
