@@ -1,3 +1,4 @@
+import pdb
 from utils.data_reader import DataReaderCSV
 from utils.data_cutter import DataCutterAnalysisSignOfDifference
 from utils.data_checker import DataCheckerEtablishedSystem
@@ -10,6 +11,8 @@ dataReader = DataReaderCSV('utils/tests/data_set.csv',
 # Faire le découpage par période
 dataCutter = DataCutterAnalysisSignOfDifference(dataReader, "Sensor_1")
 df = dataCutter.get_cutting_data()
+
+pdb.set_trace()
 
 # Prendre prendre des périodes pour avoir au moins 30 mesures et au moins deux périodes
 
