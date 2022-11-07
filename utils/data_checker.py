@@ -8,8 +8,12 @@ import pandas as pd
 from typing import List
 
 
+@dataclass
 class DataCheckerBase(ABC):
     '''Base checker to done structue for verify data compliance with standards'''
+    dataframe: pd.DataFrame
+    name_column_sensor: str
+    name_column_number_period: str
 
     @abstractmethod
     def is_data_compliance(self) -> bool:
@@ -19,12 +23,8 @@ class DataCheckerBase(ABC):
 @dataclass
 class DataCheckerEtablishedSystem(DataCheckerBase):
     '''Check data accordingly with the annex C of the nom FD X 15 140'''
-    dataframe: pd.DataFrame
-    name_column_sensor: str
-    name_column_number_period: str
     sensor_variance: float = 0.1
 
-    @abstractmethod
     def is_data_compliance(self) -> bool:
         if self.__hypothesis_a_is_true:
             return self.__hypothesis_b_is_true()
@@ -62,5 +62,4 @@ class DataCheckerEtablishedSystem(DataCheckerBase):
         '''return couples variances'''
         couples_variances = [v for v in self.dataframe.groupby(
             [self.name_column_number_period]).var()[self.name_column_sensor]]
-
         return couples_variances
