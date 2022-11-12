@@ -1,11 +1,13 @@
 import pdb
-from utils.data_reader import DataReaderCSV
-from utils.data_cutter import DataCutterAnalysisSignOfDifference
-from utils.data_checker import DataCheckerEtablishedSystem
-from utils.data_analyser import DataSensorAnalyserFDX15140, Sensor
+from src.data_reader import DataReaderCSV
+from src.data_cutter import DataCutterAnalysisSignOfDifference
+from src.data_checker import DataCheckerEtablishedSystem
+from src.data_analyser import DataSensorAnalyserFDX15140, Sensor, Equipement, Cartographie, DataCaracterisationAnalyserFDX15140
+
+import pandas as pd
 
 # Récupérer les données
-dataReader = DataReaderCSV('utils/tests/data_set.csv',
+dataReader = DataReaderCSV('src/tests/data_set.csv',
                            delimiter=";", decimal=",")
 
 # Faire le découpage par période
@@ -21,6 +23,33 @@ else:
 # first sensor
 s1 = Sensor(name='Sensor_1', number_inventory='PP8-KIT-0001', number_serial='1frfrr', measurement_uncertiainty=0.2,
             measurements=df['Sensor_1'], data_processing_strategy=DataSensorAnalyserFDX15140())
+
+sensors_data = [
+    {
+        'name': 'Sensor_1',
+        'number_inventory': 'PP8-KIT-0001',
+        'number_serial': 'serie_1',
+        'measurement_uncertiainty': 0.2,
+        'measurements': df['Sensor_1'],
+        'data_processing_strategy': DataSensorAnalyserFDX15140()
+    },
+    {
+        'name': 'Sensor_2',
+        'number_inventory': 'PP8-KIT-0002',
+        'number_serial': 'serie_2',
+        'measurement_uncertiainty': 0.2,
+        'measurements': df['Sensor_2'],
+        'data_processing_strategy': DataSensorAnalyserFDX15140()
+    },
+]
+
+sensors = [Sensor(**kwargs) for kwargs in sensors_data]
+dateheure = pd.to_datetime(df['dateheure'], format="%d/%m/%Y %H:%M")
+equipement = Equipement('Chambre froide', 'PP9-ref-0001',
+                        'hdge', 'Liebherr', 'LKV1610', 5.0, 5.0, 300.0, 350.0, 50.0)
+cartographie = Cartographie(
+    equipement, sensors, dateheure, 5, 3, DataCaracterisationAnalyserFDX15140())
+
 
 # Si régime établi instancier la class Cartographie
 pdb.set_trace()
