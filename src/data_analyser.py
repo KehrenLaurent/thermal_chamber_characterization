@@ -4,6 +4,7 @@ This module define classes for analyse data according to different standards
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from math import sqrt
+import statistics as stat
 from datetime import datetime
 import pandas as pd
 from typing import List
@@ -153,9 +154,16 @@ class DataCaracterisationAnalyserFDX15140(DataCaracterisationAnalyserBase):
         return round(sum(s.processed_data.mean for s in self.sensors)/len(self.sensors), 2)
 
     def __get_air_uncertainty(self) -> float:
-        # TODO : Implementation of this function
-        #raise NotImplementedError("This function must be impemented !!!!")
-        return 0.0
+        uncertainty_max_of_sensors = max(
+            [s.measurementUncertainty for s in self.sensors])/2
+        std_mean_of_sensors = stat.stdev(
+            [s.processed_data.mean for s in self.sensors])
+        std_std_of_sensors = stat.stdev(
+            [s.processed_data.std for s in self.sensors])
+        number_of_measurements = min(
+            [len(s.measurements) for s in self.sensors])
+
+        return round(sqrt(uncertainty_max_of_sensors**2 + sqrt(std_mean_of_sensors**2+std_std_of_sensors**2*(1-(1/number_of_measurements)))), 2)
 
     def __get_setpoint_error(self) -> float:
         return round(self.indication - self.__get_air_temperature(), 2)
