@@ -1,0 +1,58 @@
+{
+    "sensors":[
+        {
+            "name": "Sensor_1",
+            "number_inventory": "PP8-KIT-0001",
+            "number_serial": "serie_1",
+            "measurement_uncertiainty": 0.2
+        },
+        {
+            "name": "Sensor_2",
+            "number_inventory": "PP8-KIT-0002",
+            "number_serial": "serie_2",
+            "measurement_uncertiainty": 0.2
+        },
+        {
+            "name": "Sensor_3",
+            "number_inventory": "PP8-KIT-0003",
+            "number_serial": "serie_3",
+            "measurement_uncertiainty": 0.2
+        },
+        {
+            "name": "Sensor_4",
+            "number_inventory": "PP8-KIT-0004",
+            "number_serial": "serie_4",
+            "measurement_uncertiainty": 0.2
+        },
+        {
+            "name": "Sensor_5",
+            "number_inventory": "PP8-KIT-0005",
+            "number_serial": "serie_5",
+            "measurement_uncertiainty": 0.2
+        },
+        {
+            "name": "Sensor_6",
+            "number_inventory": "PP8-KIT-0006",
+            "number_serial": "serie_6",
+            "measurement_uncertiainty": 0.2
+        },
+        {
+            "name": "Sensor_7",
+            "number_inventory": "PP8-KIT-0007",
+            "number_serial": "serie_7",
+            "measurement_uncertiainty": 0.2
+        },
+        {
+            "name": "Sensor_8",
+            "number_inventory": "PP8-KIT-0008",
+            "number_serial": "serie_8",
+            "measurement_uncertiainty": 0.2
+        },
+        {
+            "name": "Sensor_9",
+            "number_inventory": "PP8-KIT-0009",
+            "number_serial": "serie_9",
+            "measurement_uncertiainty": 0.2
+        }
+    ]
+}
