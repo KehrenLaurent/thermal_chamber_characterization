@@ -3,6 +3,7 @@ This module define classes for get data by different source
 '''
 
 from abc import ABC, abstractmethod
+from typing import List
 import pandas as pd
 
 
@@ -18,8 +19,8 @@ class DataReaderBase(ABC):
         '''Return a DataFrame with data for next step of process'''
 
     @abstractmethod
-    def check_config(self) -> None:
-        '''Check if config is correct for this class'''
+    def check_config(self) -> List(bool, str):
+        '''Return a List, the first element is a bool with the result of the test, the seconde element is the error message'''
 
 
 class DataReaderCSV(DataReaderBase):
@@ -37,9 +38,10 @@ class DataReaderCSV(DataReaderBase):
                          decimal=self.decimal)
         return df
 
-    def check_config(self) -> None:
+    def check_config(self) -> List(bool, str):
         try:
             pd.read_csv(self.filepath_or_buffer,
                         delimiter=self.delimiter, decimal=self.decimal)
-        except Exception as e:
+        except FileNotFoundError as e:
             print(e)
+            return False
