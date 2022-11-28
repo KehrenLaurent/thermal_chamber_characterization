@@ -1,24 +1,18 @@
-from src.data_reader import DataReaderBase, DataReaderCSV
-import unittest
 
 
-class TestDataReaderBase(unittest.TestCase):
-
-    def test_have_method_get_dataframe(self):
-        self.assertTrue(hasattr(DataReaderBase, 'get_dataframe'),
-                        'DataReaderBase must have a function get_dataframe')
-
-    def test_have_method_check_config(self):
-        self.assertTrue(hasattr(DataReaderBase, 'check_config'),
-                        'DataReaderBase must have a function check_config')
+from caracterisation.data_reader import DataReaderBase, DataReaderCSV
+from datetime import datetime
+import pytest
 
 
-class TestDataReaderCSV(unittest.TestCase):
-    filepath_or_buffer = 'data_set.csv'
-    delimiter = '.'
-    decimal = '.'
+class TestDataReaderCSV:
+    filepath_or_buffer = 'tests/data_set.csv'
+    delimiter = ';'
+    decimal = ','
+    sensors_name = [f'Sensor_{x}' for x in range(1, 10)]
+    columns_name = ['dateheure', ] + sensors_name
 
-    def setUp(self) -> None:
+    def setup_class(self):
         self.dataReader = DataReaderCSV(
             filepath_or_buffer=self.filepath_or_buffer,
             delimiter=self.delimiter,
@@ -26,10 +20,21 @@ class TestDataReaderCSV(unittest.TestCase):
         )
 
     def test_class_initialisation(self):
-        self.assertEqual(self.dataReader.filepath_or_buffer, self.filepath_or_buffer,
-                         'Filepath or buffer is not correctly assigned during class initialization.')
-        self.assertEqual(self.dataReader.delimiter, self.delimiter,
-                         "Delimiter is not correctly assigned during class initialization")
-        self.assertEqual(self.dataReader.decimal, self.decimal,
-                         'decimal is not correctly assigned during class initialization.')
+        assert self.dataReader.filepath_or_buffer == self.filepath_or_buffer
+        assert self.dataReader.delimiter == self.delimiter
+        assert self.dataReader.decimal == self.decimal
 
+    def test_get_dataframe_columns_is_complete(self):
+        df = self.dataReader.get_dataframe()
+        df_columns_name = df.columns.tolist()
+
+        # Check if df columns is complete
+        for name in self.columns_name:
+            assert name in df_columns_name
+
+    def test_type_of_columns(self):
+        df = self.dataReader.get_dataframe()
+
+        assert df['dateheure'].dtype == datetime
+        for s in self.sensors_name:
+            assert df[s].dtype == float

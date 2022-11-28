@@ -1,8 +1,8 @@
 import pdb
-from src.data_reader import DataReaderCSV
-from src.data_cutter import DataCutterAnalysisSignOfDifference
-from src.data_checker import DataCheckerEtablishedSystem
-from src.data_analyser import DataSensorAnalyserFDX15140, Sensor, Equipement, Cartographie, DataCaracterisationAnalyserFDX15140
+from caracterisation.data_reader import DataReaderCSV
+from caracterisation.data_cutter import DataCutterAnalysisSignOfDifference
+from caracterisation.data_checker import DataCheckerEtablishedSystem
+from caracterisation.data_analyser import DataSensorAnalyserFDX15140, Sensor, Equipement, Cartographie, DataCaracterisationAnalyserFDX15140
 
 import pandas as pd
 
