@@ -1,4 +1,4 @@
-from caracterisation.data_reader import DataReaderBase, DataReaderCSV
+from caracterisation.data_reader import DataReaderCSV
 from datetime import datetime
 
 
