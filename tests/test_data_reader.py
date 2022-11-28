@@ -1,8 +1,5 @@
-
-
 from caracterisation.data_reader import DataReaderBase, DataReaderCSV
 from datetime import datetime
-import pytest
 
 
 class TestDataReaderCSV:
