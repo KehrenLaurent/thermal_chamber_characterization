@@ -54,7 +54,7 @@ class DataCheckerEtablishedSystem(DataCheckerBase):
     def __get_couples_averages_of_sensor(self) -> List[List[float]]:
         '''return couples averages'''
         couples_averages = [m for m in self.dataframe.groupby(
-            [self.name_column_number_period]).mean()[self.name_column_sensor]]
+            [self.name_column_number_period]).mean(numeric_only=True)[self.name_column_sensor]]
 
         return couples_averages
 
