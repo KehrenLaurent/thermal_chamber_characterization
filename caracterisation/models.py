@@ -2,7 +2,6 @@ from dataclasses import dataclass
 from datetime import datetime
 import pandas as pd
 from typing import List
-from caracterisation.data_analyser import DataSensorAnalyserBase
 
 
 @dataclass
@@ -47,7 +46,7 @@ class Equipement:
 
 
 class Sensor:
-    def __init__(self, name: str, number_inventory: str, number_serial: str, measurement_uncertiainty: float, measurements: pd.Series, data_processing_strategy: DataSensorAnalyserBase) -> None:
+    def __init__(self, name: str, number_inventory: str, number_serial: str, measurement_uncertiainty: float, measurements: pd.Series, data_processing_strategy) -> None:
         '''
         Object that contains data from a sensor
         '''
@@ -56,7 +55,7 @@ class Sensor:
         self.numberSerial: str = number_serial
         self.measurementUncertainty: float = measurement_uncertiainty
         self.measurements: pd.Series = measurements
-        self.dataProcessingStrategy: DataSensorAnalyserBase = data_processing_strategy
+        self.dataProcessingStrategy = data_processing_strategy
         self.processed_data: ProcessedSensorData = data_processing_strategy.get_processed_data(
             self.measurementUncertainty,
             self.measurements
@@ -66,7 +65,7 @@ class Sensor:
 @dataclass
 class Cartographie:
 
-    def __init__(self, equipement: Equipement, sensors: List[Sensor], datetimeSerie: pd.Series, cible: float, emt: float, data_processing_data_strategy: DataCaracterisationAnalyserBase) -> None:
+    def __init__(self, equipement: Equipement, sensors: List[Sensor], datetimeSerie: pd.Series, cible: float, emt: float, data_processing_data_strategy) -> None:
         self.equipement = equipement
         self.sensors = sensors
         self.datetimeSerie = datetimeSerie

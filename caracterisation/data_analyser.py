@@ -9,7 +9,7 @@ from datetime import datetime
 import pandas as pd
 from typing import List
 
-from caracterisation.models import Sensor, Equipement, ProcessedSensorData, ProcessedCaracterisationData
+from caracterisation.models import Sensor, ProcessedSensorData, ProcessedCaracterisationData
 
 
 @dataclass
